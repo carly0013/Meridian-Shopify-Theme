@@ -1,0 +1,76 @@
+<footer class="site-footer">
+  <div class="site-footer__grid">
+    <div class="site-footer__col site-footer__col--brand">
+      <p class="site-footer__wordmark">{{ shop.name }}</p>
+      {%- if section.settings.tagline != blank -%}
+        <p class="site-footer__tagline">{{ section.settings.tagline }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      <div class="site-footer__col" {{ block.shopify_attributes }}>
+        <p class="site-footer__col-title">{{ block.settings.title }}</p>
+        {%- if block.settings.menu != blank -%}
+          <ul class="site-footer__col-list">
+            {%- for link in block.settings.menu.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="site-footer__base">
+    <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+    <p>{{ section.settings.base_note }}</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Considered clothing, made slowly."
+    },
+    {
+      "type": "text",
+      "id": "base_note",
+      "label": "Base note",
+      "default": "Designed in-house."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_column",
+      "name": "Link column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Information"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        { "type": "link_column", "settings": { "title": "Information" } },
+        { "type": "link_column", "settings": { "title": "Client care" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,16 @@
+{
+  "general": {
+    "search": {
+      "submit": "Search"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to bag",
+      "sold_out": "Sold out"
+    }
+  },
+  "newsletter": {
+    "subscribed": "Thank you — you're on the list."
+  }
+}

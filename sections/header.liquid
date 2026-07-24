@@ -1,0 +1,53 @@
+<header class="site-header">
+  <div class="site-header__row">
+    <button class="site-header__menu-toggle" aria-expanded="false" aria-controls="MobileNav" data-menu-toggle>
+      <span></span><span></span><span></span>
+      <span class="visually-hidden">Menu</span>
+    </button>
+
+    <a href="{{ routes.root_url }}" class="site-header__logo">
+      {%- if settings.logo != blank -%}
+        <img src="{{ settings.logo | image_url: width: 320 }}" alt="{{ shop.name }}" width="160" loading="eager">
+      {%- else -%}
+        {{ shop.name }}
+      {%- endif -%}
+    </a>
+
+    <a href="{{ routes.cart_url }}" class="site-header__cart">
+      Bag
+      {%- if cart.item_count > 0 %} ({{ cart.item_count }}){% endif -%}
+    </a>
+  </div>
+
+  {%- if section.settings.menu != blank -%}
+    <nav class="site-header__nav" aria-label="Primary">
+      <ul class="site-header__nav-list">
+        {%- for link in section.settings.menu.links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+
+  <div id="MobileNav" class="mobile-nav" data-mobile-nav hidden>
+    <ul class="mobile-nav__list">
+      {%- for link in section.settings.menu.links -%}
+        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

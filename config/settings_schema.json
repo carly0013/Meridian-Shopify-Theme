@@ -1,0 +1,129 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Meridian",
+    "theme_version": "1.0.0",
+    "theme_author": "Custom build",
+    "theme_documentation_url": "",
+    "theme_support_url": ""
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#FAF7F2"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface (cards, alt sections)",
+        "default": "#F1EBE2"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#2A2622"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Muted text",
+        "default": "#948572"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (pop color)",
+        "default": "#B23A34"
+      },
+      {
+        "type": "color",
+        "id": "color_line",
+        "label": "Hairline / divider",
+        "default": "#E4DCD0"
+      },
+      {
+        "type": "color",
+        "id": "color_dark",
+        "label": "Dark neutral (footer, newsletter band)",
+        "default": "#211E1B"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_text",
+        "label": "Text on dark neutral",
+        "default": "#F3EFE8"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Page width",
+        "min": 1100,
+        "max": 1600,
+        "step": 50,
+        "unit": "px",
+        "default": 1400
+      },
+      {
+        "type": "range",
+        "id": "border_width",
+        "label": "Site border width",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Site border color",
+        "default": "#E4DCD0"
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "label": "Site border corner rounding",
+        "min": 0,
+        "max": 60,
+        "step": 2,
+        "unit": "px",
+        "default": 28
+      },
+      {
+        "type": "range",
+        "id": "corner_radius",
+        "label": "Image corner rounding",
+        "min": 0,
+        "max": 32,
+        "step": 2,
+        "unit": "px",
+        "default": 16
+      }
+    ]
+  }
+]

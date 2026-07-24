@@ -1,0 +1,33 @@
+<section class="statement">
+  <div class="statement__rule" aria-hidden="true"></div>
+  <blockquote class="statement__quote">{{ section.settings.quote }}</blockquote>
+  {%- if section.settings.attribution != blank -%}
+    <cite class="statement__attribution">{{ section.settings.attribution }}</cite>
+  {%- endif -%}
+  <div class="statement__rule" aria-hidden="true"></div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand statement",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Statement",
+      "default": "We make clothes for the years after the season they were bought in."
+    },
+    {
+      "type": "text",
+      "id": "attribution",
+      "label": "Attribution",
+      "default": "— Founder's note"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand statement"
+    }
+  ]
+}
+{% endschema %}
