@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "shipping": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Shipping & returns",
+            "content": "<p>Complimentary shipping and returns within 30 days.</p>"
+          }
+        },
+        "care": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Care",
+            "content": "<p>Dry clean only. Store on a padded hanger.</p>"
+          }
+        }
+      },
+      "block_order": ["shipping", "care"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

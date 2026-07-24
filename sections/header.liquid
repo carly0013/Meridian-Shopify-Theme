@@ -7,7 +7,8 @@
 
     <a href="{{ routes.root_url }}" class="site-header__logo">
       {%- if settings.logo != blank -%}
-        <img src="{{ settings.logo | image_url: width: 320 }}" alt="{{ shop.name }}" width="160" loading="eager">
+        {%- assign logo_height = 160.0 | divided_by: settings.logo.aspect_ratio | round -%}
+        <img src="{{ settings.logo | image_url: width: 320 }}" alt="{{ shop.name }}" width="160" height="{{ logo_height }}" loading="eager">
       {%- else -%}
         {{ shop.name }}
       {%- endif -%}

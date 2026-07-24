@@ -1,0 +1,173 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+-%}
+
+<section class="product" data-product-root data-section-id="{{ section.id }}">
+  <div class="product__gallery product-gallery" data-gallery>
+    <div class="product-gallery__main" data-gallery-main>
+      {%- if product.featured_media != blank -%}
+        <img
+          src="{{ product.featured_media | image_url: width: 1200 }}"
+          srcset="{{ product.featured_media | image_url: width: 700 }} 700w, {{ product.featured_media | image_url: width: 1200 }} 1200w, {{ product.featured_media | image_url: width: 1800 }} 1800w"
+          sizes="(max-width: 900px) 100vw, 50vw"
+          alt="{{ product.featured_media.alt | escape }}"
+          width="{{ product.featured_media.width }}"
+          height="{{ product.featured_media.height }}"
+          loading="eager"
+          data-gallery-main-image
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'product-gallery__placeholder-svg' }}
+      {%- endif -%}
+    </div>
+
+    {%- if product.media.size > 1 -%}
+      <div class="product-gallery__thumbs" role="tablist" aria-label="Product media">
+        {%- for media in product.media -%}
+          <button
+            type="button"
+            class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+            data-gallery-thumb
+            data-media-id="{{ media.id }}"
+            data-full-src="{{ media | image_url: width: 1800 }}"
+            data-full-srcset="{{ media | image_url: width: 700 }} 700w, {{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 1800 }} 1800w"
+            data-alt="{{ media.alt | escape }}"
+            aria-label="{{ 'products.product.view_image' | t }} {{ forloop.index }}"
+          >
+            <img src="{{ media | image_url: width: 200 }}" alt="" loading="lazy" width="80" height="107">
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="product__info">
+    <h1 class="product__title">{{ product.title }}</h1>
+
+    <div class="product__price" data-product-price>
+      {%- if current_variant.compare_at_price > current_variant.price -%}
+        <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+        <span class="product__price-sale">{{ current_variant.price | money }}</span>
+        <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+        <span class="product__price-compare">{{ current_variant.compare_at_price | money }}</span>
+        <span class="product__price-badge">{{ 'products.product.on_sale' | t }}</span>
+      {%- else -%}
+        <span>{{ current_variant.price | money }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- if product.description != blank -%}
+      <div class="product__description rte">{{ product.description }}</div>
+    {%- endif -%}
+
+    {%- form 'product', product, id: 'ProductForm', class: 'product-form' -%}
+      <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+      {%- for option in product.options_with_values -%}
+        <fieldset class="product-form__option" data-option-index="{{ forloop.index0 }}">
+          <legend class="product-form__option-label">{{ option.name }}</legend>
+          <div class="product-form__pills">
+            {%- for value in option.values -%}
+              {%- assign input_id = 'Option-' | append: section.id | append: '-' | append: forloop.parentloop.index0 | append: '-' | append: forloop.index0 -%}
+              <input
+                type="radio"
+                id="{{ input_id }}"
+                name="option-{{ forloop.parentloop.index0 }}"
+                value="{{ value | escape }}"
+                {% if option.selected_value == value %}checked{% endif %}
+                class="visually-hidden product-form__pill-input"
+                data-option-input
+              >
+              <label for="{{ input_id }}" class="product-form__pill">{{ value }}</label>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+      {%- endfor -%}
+
+      <div class="product-form__quantity">
+        <label for="Quantity-{{ section.id }}" class="product-form__quantity-label">{{ 'products.product.quantity' | t }}</label>
+        <div class="product-form__quantity-stepper">
+          <button type="button" class="product-form__quantity-btn" data-quantity-decrease aria-label="{{ 'products.product.decrease_quantity' | t }}">&minus;</button>
+          <input type="number" id="Quantity-{{ section.id }}" name="quantity" value="1" min="1" inputmode="numeric" class="product-form__quantity-input" data-quantity-input>
+          <button type="button" class="product-form__quantity-btn" data-quantity-increase aria-label="{{ 'products.product.increase_quantity' | t }}">+</button>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        name="add"
+        class="button product-form__submit"
+        data-add-to-cart
+        data-label-add="{{ 'products.product.add_to_cart' | t }}"
+        data-label-sold-out="{{ 'products.product.sold_out' | t }}"
+        data-label-unavailable="{{ 'products.product.unavailable' | t }}"
+        {% unless current_variant.available %}disabled{% endunless %}
+      >
+        {%- if current_variant.available -%}
+          {{ 'products.product.add_to_cart' | t }}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- endif -%}
+      </button>
+    {%- endform -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="product__accordions">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'accordion' -%}
+            <details class="product-accordion" {{ block.shopify_attributes }}>
+              <summary class="product-accordion__heading">{{ block.settings.heading }}</summary>
+              <div class="product-accordion__content rte">{{ block.settings.content }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <script type="application/json" data-product-json>
+    {{ product.variants | json }}
+  </script>
+
+  {%- for variant in product.variants -%}
+    <template data-price-template data-variant-id="{{ variant.id }}">
+      {%- if variant.compare_at_price > variant.price -%}
+        <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+        <span class="product__price-sale">{{ variant.price | money }}</span>
+        <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+        <span class="product__price-compare">{{ variant.compare_at_price | money }}</span>
+        <span class="product__price-badge">{{ 'products.product.on_sale' | t }}</span>
+      {%- else -%}
+        <span>{{ variant.price | money }}</span>
+      {%- endif -%}
+    </template>
+  {%- endfor -%}
+</section>
+
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Product information",
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordion row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Shipping & returns"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Complimentary shipping and returns within 30 days.</p>"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -7,7 +7,15 @@
   "products": {
     "product": {
       "add_to_cart": "Add to bag",
-      "sold_out": "Sold out"
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "regular_price": "Regular price",
+      "sale_price": "Sale price",
+      "on_sale": "Sale",
+      "quantity": "Quantity",
+      "decrease_quantity": "Decrease quantity",
+      "increase_quantity": "Increase quantity",
+      "view_image": "View image"
     }
   },
   "newsletter": {
