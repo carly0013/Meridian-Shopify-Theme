@@ -2,6 +2,9 @@
   "general": {
     "search": {
       "submit": "Search"
+    },
+    "cart": {
+      "title": "Cart"
     }
   },
   "products": {
