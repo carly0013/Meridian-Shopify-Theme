@@ -29,43 +29,43 @@
         "type": "color",
         "id": "color_background",
         "label": "Background",
-        "default": "#FAF7F2"
+        "default": "#1B1815"
       },
       {
         "type": "color",
         "id": "color_surface",
         "label": "Surface (cards, alt sections)",
-        "default": "#F1EBE2"
+        "default": "#26211C"
       },
       {
         "type": "color",
         "id": "color_text",
         "label": "Text",
-        "default": "#2A2622"
+        "default": "#F3EFE8"
       },
       {
         "type": "color",
         "id": "color_muted",
         "label": "Muted text",
-        "default": "#948572"
+        "default": "#A79A87"
       },
       {
         "type": "color",
         "id": "color_accent",
         "label": "Accent (pop color)",
-        "default": "#B23A34"
+        "default": "#C9483D"
       },
       {
         "type": "color",
         "id": "color_line",
         "label": "Hairline / divider",
-        "default": "#E4DCD0"
+        "default": "#342D25"
       },
       {
         "type": "color",
         "id": "color_dark",
         "label": "Dark neutral (footer, newsletter band)",
-        "default": "#211E1B"
+        "default": "#100D0B"
       },
       {
         "type": "color",
@@ -102,7 +102,7 @@
         "type": "color",
         "id": "color_border",
         "label": "Site border color",
-        "default": "#E4DCD0"
+        "default": "#3D352C"
       },
       {
         "type": "range",

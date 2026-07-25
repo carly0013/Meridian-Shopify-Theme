@@ -2,17 +2,17 @@
   "current": "Default",
   "presets": {
     "Default": {
-      "color_background": "#FAF7F2",
-      "color_surface": "#F1EBE2",
-      "color_text": "#2A2622",
-      "color_muted": "#948572",
-      "color_accent": "#B23A34",
-      "color_line": "#E4DCD0",
-      "color_dark": "#211E1B",
+      "color_background": "#1B1815",
+      "color_surface": "#26211C",
+      "color_text": "#F3EFE8",
+      "color_muted": "#A79A87",
+      "color_accent": "#C9483D",
+      "color_line": "#342D25",
+      "color_dark": "#100D0B",
       "color_dark_text": "#F3EFE8",
       "page_width": 1400,
       "border_width": 16,
-      "color_border": "#E4DCD0",
+      "color_border": "#3D352C",
       "border_radius": 28,
       "corner_radius": 16
     }
