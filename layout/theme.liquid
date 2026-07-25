@@ -27,6 +27,33 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
+  {%- style -%}
+    :root {
+      --color-bg: {{ settings.color_background | default: '#FAF7F2' }};
+      --color-surface: {{ settings.color_surface | default: '#F1EBE2' }};
+      --color-text: {{ settings.color_text | default: '#2A2622' }};
+      --color-muted: {{ settings.color_muted | default: '#948572' }};
+      --color-accent: {{ settings.color_accent | default: '#B23A34' }};
+      --color-accent-glow: {{ settings.color_accent | default: '#B23A34' | color_modify: 'alpha', 0.13 }};
+      --color-line: {{ settings.color_line | default: '#E4DCD0' }};
+      --color-dark: {{ settings.color_dark | default: '#211E1B' }};
+      --color-dark-text: {{ settings.color_dark_text | default: '#F3EFE8' }};
+      --color-dark-text-muted: {{ settings.color_dark_text | default: '#F3EFE8' | color_modify: 'alpha', 0.6 }};
+      --border-width: {{ settings.border_width | default: 16 }}px;
+      --color-border: {{ settings.color_border | default: '#E4DCD0' }};
+      --frame-radius: {{ settings.border_radius | default: 28 }}px;
+      --radius: {{ settings.corner_radius | default: 16 }}px;
+
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --page-width: {{ settings.page_width | default: 1400 }}px;
+      --gutter: clamp(20px, 4vw, 64px);
+
+      color-scheme: light;
+    }
+  {%- endstyle -%}
+
   {{ 'theme.css' | asset_url | stylesheet_tag }}
 
   <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
