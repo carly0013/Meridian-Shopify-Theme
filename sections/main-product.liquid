@@ -56,6 +56,22 @@
       {%- endif -%}
     </div>
 
+    {%- if current_variant.unit_price_measurement -%}
+      <p class="product__unit-price" data-unit-price>
+        {{ current_variant.unit_price | money }}/{% if current_variant.unit_price_measurement.reference_value != 1 %}{{ current_variant.unit_price_measurement.reference_value }}{% endif %}{{ current_variant.unit_price_measurement.reference_unit }}
+      </p>
+    {%- endif -%}
+
+    <shopify-payment-terms variant-id="{{ current_variant.id }}" data-shopify-payment-terms></shopify-payment-terms>
+
+    {%- assign pickup_location = current_variant.store_availabilities | where: 'pick_up_enabled', true | first -%}
+    {%- if pickup_location -%}
+      <p class="product__pickup">
+        <span class="product__pickup-dot" aria-hidden="true"></span>
+        {{ 'products.product.pickup_available' | t: location: pickup_location.location.name }}
+      </p>
+    {%- endif -%}
+
     {%- if product.description != blank -%}
       <div class="product__description rte">{{ product.description }}</div>
     {%- endif -%}
@@ -109,6 +125,8 @@
           {{ 'products.product.sold_out' | t }}
         {%- endif -%}
       </button>
+
+      {{ form | payment_button }}
     {%- endform -%}
 
     {%- if section.blocks.size > 0 -%}
@@ -141,6 +159,11 @@
         <span>{{ variant.price | money }}</span>
       {%- endif -%}
     </template>
+    {%- if variant.unit_price_measurement -%}
+      <template data-unit-price-template data-variant-id="{{ variant.id }}">
+        {{ variant.unit_price | money }}/{% if variant.unit_price_measurement.reference_value != 1 %}{{ variant.unit_price_measurement.reference_value }}{% endif %}{{ variant.unit_price_measurement.reference_unit }}
+      </template>
+    {%- endif -%}
   {%- endfor -%}
 </section>
 

@@ -20,7 +20,15 @@
       },
       "block_order": ["shipping", "care"],
       "settings": {}
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {}
+    },
+    "complementary": {
+      "type": "complementary-products",
+      "settings": {}
     }
   },
-  "order": ["main"]
+  "order": ["main", "related", "complementary"]
 }

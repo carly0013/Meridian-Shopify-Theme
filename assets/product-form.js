@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var variantInput = root.querySelector('[data-variant-id]');
   var priceEl = root.querySelector('[data-product-price]');
+  var unitPriceEl = root.querySelector('[data-unit-price]');
+  var paymentTerms = root.querySelector('[data-shopify-payment-terms]');
   var submitBtn = root.querySelector('[data-add-to-cart]');
   var optionFieldsets = root.querySelectorAll('[data-option-index]');
   var mainImage = root.querySelector('[data-gallery-main-image]');
@@ -66,6 +68,22 @@ document.addEventListener('DOMContentLoaded', function () {
     if (template) priceEl.innerHTML = template.innerHTML;
   }
 
+  function updateUnitPrice(variant) {
+    if (!unitPriceEl || !variant) return;
+    var template = root.querySelector('[data-unit-price-template][data-variant-id="' + variant.id + '"]');
+    if (template) {
+      unitPriceEl.innerHTML = template.innerHTML;
+      unitPriceEl.hidden = false;
+    } else {
+      unitPriceEl.hidden = true;
+    }
+  }
+
+  function updatePaymentTerms(variant) {
+    if (!paymentTerms || !variant) return;
+    paymentTerms.setAttribute('variant-id', variant.id);
+  }
+
   function updateUrl(variant) {
     if (!variant || !window.history || !window.history.replaceState) return;
     var url = new URL(window.location.href);
@@ -83,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (variantInput) variantInput.value = variant.id;
     updatePrice(variant);
+    updateUnitPrice(variant);
+    updatePaymentTerms(variant);
     updateUrl(variant);
     if (variant.featured_media) setActiveMedia(variant.featured_media.id);
   }

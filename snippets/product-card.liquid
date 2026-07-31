@@ -1,0 +1,42 @@
+{%- comment -%}
+  Accepts: product
+{%- endcomment -%}
+{%- assign card_variant = product.selected_or_first_available_variant -%}
+<div class="product-card">
+  <a href="{{ product.url }}" class="product-card__media">
+    {%- if product.featured_media != blank -%}
+      <img
+        src="{{ product.featured_media | image_url: width: 800 }}"
+        srcset="{{ product.featured_media | image_url: width: 500 }} 500w, {{ product.featured_media | image_url: width: 800 }} 800w"
+        sizes="(max-width: 749px) 50vw, 25vw"
+        alt="{{ product.featured_media.alt | escape }}"
+        loading="lazy"
+        width="{{ product.featured_media.width }}"
+        height="{{ product.featured_media.height }}"
+      >
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+    {%- endif -%}
+    {%- if product.compare_at_price_max > product.price -%}
+      <span class="product-card__badge">{{ 'products.product.on_sale' | t }}</span>
+    {%- endif -%}
+  </a>
+  <div class="product-card__info">
+    <h3 class="product-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+    <div class="product-card__price-row">
+      {%- if product.price_varies -%}
+        <p class="product-card__price">{{ product.price_min | money }} &ndash; {{ product.price_max | money }}</p>
+      {%- elsif product.compare_at_price_max > product.price -%}
+        <p class="product-card__price product-card__price--sale">{{ product.price | money }}</p>
+        <p class="product-card__price product-card__price--compare">{{ product.compare_at_price_max | money }}</p>
+      {%- else -%}
+        <p class="product-card__price">{{ product.price | money }}</p>
+      {%- endif -%}
+    </div>
+    {%- if card_variant.unit_price_measurement -%}
+      <p class="product-card__unit-price">
+        {{ card_variant.unit_price | money }}/{% if card_variant.unit_price_measurement.reference_value != 1 %}{{ card_variant.unit_price_measurement.reference_value }}{% endif %}{{ card_variant.unit_price_measurement.reference_unit }}
+      </p>
+    {%- endif -%}
+  </div>
+</div>

@@ -18,10 +18,47 @@
       "quantity": "Quantity",
       "decrease_quantity": "Decrease quantity",
       "increase_quantity": "Increase quantity",
-      "view_image": "View image"
+      "view_image": "View image",
+      "pickup_available": "Pickup available at {{ location }}"
     }
   },
   "newsletter": {
     "subscribed": "Thank you — you're on the list."
+  },
+  "collections": {
+    "general": {
+      "no_matches": "No products match these filters."
+    },
+    "filters": {
+      "price_min": "From",
+      "price_max": "To",
+      "apply": "Apply",
+      "clear": "Clear all"
+    },
+    "sort": {
+      "label": "Sort by"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "page_of": "Page {{ current }} of {{ total }}"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your bag",
+      "empty": "Your bag is empty.",
+      "continue_shopping": "Continue shopping",
+      "product": "Product",
+      "price": "Price",
+      "total": "Total",
+      "note": "Order note",
+      "remove": "Remove",
+      "subtotal": "Subtotal",
+      "taxes_included": "Taxes included. Shipping calculated at checkout.",
+      "checkout": "Checkout",
+      "update": "Update bag"
+    }
   }
 }

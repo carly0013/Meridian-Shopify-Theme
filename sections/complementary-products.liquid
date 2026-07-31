@@ -1,0 +1,53 @@
+<div
+  class="product-recommendations product-recommendations--complementary"
+  data-product-recommendations
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}&intent=complementary"
+>
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div class="product-recommendations__header">
+      <p class="product-recommendations__eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="product-recommendations__heading">{{ section.settings.heading }}</h2>
+    </div>
+    <div class="product-recommendations__grid">
+      {%- for recommended_product in recommendations.products -%}
+        {%- render 'product-card', product: recommended_product -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<script src="{{ 'product-recommendations.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Complementary products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Pairs well with"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Complete the set"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Complementary products"
+    }
+  ]
+}
+{% endschema %}

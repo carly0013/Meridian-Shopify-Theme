@@ -1,0 +1,125 @@
+<div class="cart">
+  <h1 class="cart__title">{{ 'cart.general.title' | t }}</h1>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="cart__empty">
+      <p>{{ 'cart.general.empty' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'cart.general.continue_shopping' | t }}</a>
+    </div>
+  {%- else -%}
+    {%- form 'cart', cart, id: 'CartForm', class: 'cart__form' -%}
+      <button type="submit" class="visually-hidden">{{ 'cart.general.update' | t }}</button>
+
+      <div class="cart__layout">
+        <div class="cart__items">
+          <div class="cart__items-header">
+            <span>{{ 'cart.general.product' | t }}</span>
+            <span>{{ 'cart.general.price' | t }}</span>
+            <span>{{ 'products.product.quantity' | t }}</span>
+            <span>{{ 'cart.general.total' | t }}</span>
+          </div>
+
+          {%- for item in cart.items -%}
+            <div class="cart-item">
+              <div class="cart-item__product">
+                <a href="{{ item.url }}" class="cart-item__media">
+                  {%- if item.image -%}
+                    {%- assign cart_image_height = 100.0 | divided_by: item.image.aspect_ratio | round -%}
+                    <img
+                      src="{{ item.image | image_url: width: 200 }}"
+                      alt="{{ item.image.alt | escape }}"
+                      width="100"
+                      height="{{ cart_image_height }}"
+                      loading="lazy"
+                    >
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'cart-item__placeholder-svg' }}
+                  {%- endif -%}
+                </a>
+                <div class="cart-item__details">
+                  <h3 class="cart-item__title"><a href="{{ item.url }}">{{ item.product.title }}</a></h3>
+                  {%- unless item.product.has_only_default_variant -%}
+                    <p class="cart-item__variant">{{ item.variant.title }}</p>
+                  {%- endunless -%}
+                  {%- if item.selling_plan_allocation -%}
+                    <p class="cart-item__selling-plan">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                  {%- endif -%}
+                  <a href="{{ item.url_to_remove }}" class="cart-item__remove">{{ 'cart.general.remove' | t }}</a>
+                </div>
+              </div>
+
+              <div class="cart-item__price">
+                <span class="cart-item__price-label">{{ 'cart.general.price' | t }}</span>
+                {%- if item.original_price != item.final_price -%}
+                  <span class="cart-item__price-sale">{{ item.final_price | money }}</span>
+                  <span class="cart-item__price-compare">{{ item.original_price | money }}</span>
+                {%- else -%}
+                  <span>{{ item.original_price | money }}</span>
+                {%- endif -%}
+                {%- if item.unit_price_measurement -%}
+                  <span class="cart-item__unit-price">
+                    {{ item.unit_price | money }}/{% if item.unit_price_measurement.reference_value != 1 %}{{ item.unit_price_measurement.reference_value }}{% endif %}{{ item.unit_price_measurement.reference_unit }}
+                  </span>
+                {%- endif -%}
+              </div>
+
+              <div class="cart-item__quantity">
+                <span class="cart-item__price-label">{{ 'products.product.quantity' | t }}</span>
+                <div class="product-form__quantity-stepper">
+                  <button type="button" class="product-form__quantity-btn" data-quantity-decrease aria-label="{{ 'products.product.decrease_quantity' | t }}">&minus;</button>
+                  <input
+                    type="number"
+                    name="updates[{{ item.key }}]"
+                    value="{{ item.quantity }}"
+                    min="0"
+                    class="product-form__quantity-input"
+                    data-quantity-input
+                    aria-label="{{ 'products.product.quantity' | t }} — {{ item.product.title }}"
+                  >
+                  <button type="button" class="product-form__quantity-btn" data-quantity-increase aria-label="{{ 'products.product.increase_quantity' | t }}">+</button>
+                </div>
+              </div>
+
+              <div class="cart-item__total">
+                <span class="cart-item__price-label">{{ 'cart.general.total' | t }}</span>
+                {{ item.final_line_price | money }}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div class="cart__summary">
+          <label class="cart__note-label" for="CartNote">{{ 'cart.general.note' | t }}</label>
+          <textarea name="note" id="CartNote" class="cart__note">{{ cart.note }}</textarea>
+
+          {%- if cart.cart_level_discount_applications.size > 0 -%}
+            <ul class="cart__discounts">
+              {%- for discount in cart.cart_level_discount_applications -%}
+                <li class="cart__discount">{{ discount.title }} (&minus;{{ discount.total_allocated_amount | money }})</li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+          <div class="cart__subtotal">
+            <span>{{ 'cart.general.subtotal' | t }}</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+          {%- if cart.taxes_included -%}
+            <p class="cart__tax-note">{{ 'cart.general.taxes_included' | t }}</p>
+          {%- endif -%}
+
+          <button type="submit" name="checkout" value="checkout" class="button cart__checkout">{{ 'cart.general.checkout' | t }}</button>
+          {{ form | payment_button }}
+        </div>
+      </div>
+    {%- endform -%}
+  {%- endif -%}
+</div>
+
+<script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Main cart"
+}
+{% endschema %}
