@@ -4,6 +4,16 @@
       "type": "hero-editorial",
       "settings": {}
     },
+    "value-bar": {
+      "type": "value-bar",
+      "blocks": {
+        "item-1": { "type": "item", "settings": { "text": "Full-grain leather" } },
+        "item-2": { "type": "item", "settings": { "text": "Hand-cut & finished" } },
+        "item-3": { "type": "item", "settings": { "text": "Lifetime repair" } },
+        "item-4": { "type": "item", "settings": { "text": "Complimentary shipping" } }
+      },
+      "block_order": ["item-1", "item-2", "item-3", "item-4"]
+    },
     "lookbook": {
       "type": "lookbook",
       "blocks": {
@@ -28,5 +38,5 @@
       "settings": {}
     }
   },
-  "order": ["hero", "lookbook", "featured-collection", "statement", "newsletter"]
+  "order": ["hero", "value-bar", "lookbook", "featured-collection", "statement", "newsletter"]
 }
