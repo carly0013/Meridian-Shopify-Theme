@@ -5,14 +5,14 @@
       "color_background": "#1B1815",
       "color_surface": "#26211C",
       "color_text": "#F3EFE8",
-      "color_muted": "#A79A87",
+      "color_muted": "#BFB3A0",
       "color_accent": "#C9483D",
-      "color_line": "#342D25",
+      "color_line": "#443B2F",
       "color_dark": "#100D0B",
       "color_dark_text": "#F3EFE8",
       "page_width": 1400,
       "border_width": 16,
-      "color_border": "#3D352C",
+      "color_border": "#4D4235",
       "border_radius": 28,
       "corner_radius": 16
     }
