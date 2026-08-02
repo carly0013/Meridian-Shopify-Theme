@@ -5,6 +5,9 @@
     },
     "cart": {
       "title": "Cart"
+    },
+    "newsletter": {
+      "email_label": "Email address"
     }
   },
   "products": {
@@ -23,7 +26,8 @@
     }
   },
   "newsletter": {
-    "subscribed": "Thank you — you're on the list."
+    "subscribed": "Thank you — you're on the list.",
+    "submit": "Subscribe"
   },
   "collections": {
     "general": {
@@ -59,6 +63,20 @@
       "taxes_included": "Taxes included. Shipping calculated at checkout.",
       "checkout": "Checkout",
       "update": "Update bag"
+    }
+  },
+  "footer": {
+    "resources": "Resources",
+    "contact_us": "Contact us"
+  },
+  "contact": {
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "send": "Send message",
+      "post_success": "Thanks — we'll get back to you shortly."
     }
   }
 }

@@ -5,19 +5,19 @@
 
     {%- form 'customer', class: 'newsletter__form' -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
-      <label class="visually-hidden" for="NewsletterEmail">Email address</label>
+      <label class="visually-hidden" for="NewsletterEmail">{{ 'general.newsletter.email_label' | t }}</label>
       <input
         type="email"
         name="contact[email]"
         id="NewsletterEmail"
         class="newsletter__input"
-        placeholder="Email address"
+        placeholder="{{ 'general.newsletter.email_label' | t }}"
         required
       >
-      <button type="submit" class="newsletter__submit">Subscribe</button>
+      <button type="submit" class="newsletter__submit">{{ 'newsletter.submit' | t }}</button>
 
       {%- if form.posted_successfully? -%}
-        <p class="newsletter__message newsletter__message--success">Thank you — you're on the list.</p>
+        <p class="newsletter__message newsletter__message--success">{{ 'newsletter.subscribed' | t }}</p>
       {%- elsif form.errors -%}
         <p class="newsletter__message newsletter__message--error">{{ form.errors.messages['contact[email]'] | default: 'Please enter a valid email.' }}</p>
       {%- endif -%}

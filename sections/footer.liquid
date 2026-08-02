@@ -1,9 +1,47 @@
+{%- liquid
+  assign has_social = false
+  if section.settings.social_instagram != blank or section.settings.social_facebook != blank or section.settings.social_tiktok != blank or section.settings.social_pinterest != blank or section.settings.social_youtube != blank or section.settings.social_x != blank
+    assign has_social = true
+  endif
+
+  assign show_resources_column = false
+  if section.settings.contact_link != blank
+    assign show_resources_column = true
+  endif
+  if section.settings.show_policies and shop.policies.size > 0
+    assign show_resources_column = true
+  endif
+-%}
+
 <footer class="site-footer">
   <div class="site-footer__grid">
     <div class="site-footer__col site-footer__col--brand">
       <p class="site-footer__wordmark">{{ shop.name }}</p>
       {%- if section.settings.tagline != blank -%}
         <p class="site-footer__tagline">{{ section.settings.tagline }}</p>
+      {%- endif -%}
+
+      {%- if has_social -%}
+        <ul class="site-footer__social">
+          {%- if section.settings.social_instagram != blank -%}
+            <li><a href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{%- render 'icon-social', platform: 'instagram' -%}</a></li>
+          {%- endif -%}
+          {%- if section.settings.social_facebook != blank -%}
+            <li><a href="{{ section.settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">{%- render 'icon-social', platform: 'facebook' -%}</a></li>
+          {%- endif -%}
+          {%- if section.settings.social_tiktok != blank -%}
+            <li><a href="{{ section.settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">{%- render 'icon-social', platform: 'tiktok' -%}</a></li>
+          {%- endif -%}
+          {%- if section.settings.social_pinterest != blank -%}
+            <li><a href="{{ section.settings.social_pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest">{%- render 'icon-social', platform: 'pinterest' -%}</a></li>
+          {%- endif -%}
+          {%- if section.settings.social_youtube != blank -%}
+            <li><a href="{{ section.settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube">{%- render 'icon-social', platform: 'youtube' -%}</a></li>
+          {%- endif -%}
+          {%- if section.settings.social_x != blank -%}
+            <li><a href="{{ section.settings.social_x }}" target="_blank" rel="noopener" aria-label="X">{%- render 'icon-social', platform: 'x' -%}</a></li>
+          {%- endif -%}
+        </ul>
       {%- endif -%}
     </div>
 
@@ -19,10 +57,60 @@
         {%- endif -%}
       </div>
     {%- endfor -%}
+
+    {%- if show_resources_column -%}
+      <div class="site-footer__col">
+        <p class="site-footer__col-title">{{ 'footer.resources' | t }}</p>
+        <ul class="site-footer__col-list">
+          {%- if section.settings.contact_link != blank -%}
+            <li><a href="{{ section.settings.contact_link }}">{{ 'footer.contact_us' | t }}</a></li>
+          {%- endif -%}
+          {%- if section.settings.show_policies -%}
+            {%- for policy in shop.policies -%}
+              <li><a href="{{ policy.url }}">{{ policy.title }}</a></li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_newsletter -%}
+      <div class="site-footer__col site-footer__col--newsletter">
+        <p class="site-footer__col-title">{{ section.settings.newsletter_heading }}</p>
+        {%- form 'customer', class: 'site-footer__newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <label class="visually-hidden" for="FooterNewsletterEmail-{{ section.id }}">{{ 'general.newsletter.email_label' | t }}</label>
+          <input
+            type="email"
+            name="contact[email]"
+            id="FooterNewsletterEmail-{{ section.id }}"
+            class="site-footer__newsletter-input"
+            placeholder="{{ 'general.newsletter.email_label' | t }}"
+            required
+          >
+          <button type="submit" class="site-footer__newsletter-submit" aria-label="{{ 'general.newsletter.email_label' | t }}">&rarr;</button>
+
+          {%- if form.posted_successfully? -%}
+            <p class="site-footer__newsletter-message">{{ 'newsletter.subscribed' | t }}</p>
+          {%- elsif form.errors -%}
+            <p class="site-footer__newsletter-message site-footer__newsletter-message--error">{{ form.errors.messages['contact[email]'] | default: 'Please enter a valid email.' }}</p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    {%- endif -%}
   </div>
 
   <div class="site-footer__base">
     <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+
+    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      <ul class="site-footer__payment-icons">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag: class: 'site-footer__payment-icon' }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
     <p>{{ section.settings.base_note }}</p>
   </div>
 </footer>
@@ -42,6 +130,83 @@
       "id": "base_note",
       "label": "Base note",
       "default": "Designed in-house."
+    },
+    {
+      "type": "header",
+      "content": "Contact"
+    },
+    {
+      "type": "url",
+      "id": "contact_link",
+      "label": "Contact link",
+      "info": "Points to your Contact us page, shown in the Resources column"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Show policy links",
+      "info": "Automatically lists your store's legal policies (set in Settings > Policies)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter signup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Stay in the loop"
+    },
+    {
+      "type": "header",
+      "content": "Payment icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show accepted payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Social media"
+    },
+    {
+      "type": "text",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "text",
+      "id": "social_tiktok",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "text",
+      "id": "social_pinterest",
+      "label": "Pinterest URL"
+    },
+    {
+      "type": "text",
+      "id": "social_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "text",
+      "id": "social_x",
+      "label": "X URL"
     }
   ],
   "blocks": [
