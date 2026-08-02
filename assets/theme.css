@@ -292,24 +292,65 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  gap: 20px;
-  padding: 24px var(--gutter);
+  gap: 28px;
+  padding: 40px var(--gutter);
   border-top: 1px solid var(--color-line);
   border-bottom: 1px solid var(--color-line);
 }
 .value-bar__item {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 700;
-  letter-spacing: .04em;
+  letter-spacing: .02em;
   color: var(--color-text);
   text-align: center;
 }
 
+.value-bar--marquee {
+  padding: 0;
+  overflow: hidden;
+}
+.value-bar--marquee .value-bar__track {
+  display: flex;
+  width: max-content;
+  animation: value-bar-marquee var(--marquee-duration, 25s) linear infinite;
+}
+.value-bar--marquee:hover .value-bar__track,
+.value-bar--marquee:focus-within .value-bar__track {
+  animation-play-state: paused;
+}
+.value-bar--marquee .value-bar__group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 40px 0;
+}
+.value-bar--marquee .value-bar__item {
+  position: relative;
+  padding: 0 28px;
+  white-space: nowrap;
+}
+.value-bar--marquee .value-bar__item::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+@keyframes value-bar-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 @media (max-width: 700px) {
-  .value-bar { gap: 16px 28px; padding: 20px var(--gutter); }
-  .value-bar__item { font-size: 11px; }
+  .value-bar { gap: 20px 28px; padding: 28px var(--gutter); }
+  .value-bar__item { font-size: 13px; }
 }
 
 /* ------------------------------ Lookbook ------------------------------ */

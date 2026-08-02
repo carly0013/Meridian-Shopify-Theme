@@ -1,14 +1,54 @@
 {%- if section.blocks.size > 0 -%}
-  <div class="value-bar">
-    {%- for block in section.blocks -%}
-      <p class="value-bar__item" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
-    {%- endfor -%}
-  </div>
+  {%- if section.settings.display_style == 'marquee' -%}
+    <div class="value-bar value-bar--marquee" style="--marquee-duration: {{ section.settings.marquee_speed }}s;">
+      <div class="value-bar__track">
+        <div class="value-bar__group">
+          {%- for block in section.blocks -%}
+            <p class="value-bar__item" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+          {%- endfor -%}
+        </div>
+        <div class="value-bar__group" aria-hidden="true">
+          {%- for block in section.blocks -%}
+            <p class="value-bar__item">{{ block.settings.text }}</p>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="value-bar">
+      {%- for block in section.blocks -%}
+        <p class="value-bar__item" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
 {%- endif -%}
 
 {% schema %}
 {
   "name": "Value bar",
+  "settings": [
+    {
+      "type": "select",
+      "id": "display_style",
+      "label": "Display style",
+      "options": [
+        { "value": "static", "label": "Static" },
+        { "value": "marquee", "label": "Marquee" }
+      ],
+      "default": "static"
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "label": "Marquee speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "default": 25,
+      "visible_if": "{{ section.settings.display_style == 'marquee' }}"
+    }
+  ],
   "blocks": [
     {
       "type": "item",
