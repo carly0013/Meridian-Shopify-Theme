@@ -119,6 +119,37 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  var zoomTrigger = root.querySelector('[data-gallery-zoom-trigger]');
+  var zoomOverlay = document.querySelector('[data-product-zoom]');
+  var zoomImage = zoomOverlay ? zoomOverlay.querySelector('[data-product-zoom-image]') : null;
+
+  if (zoomTrigger && zoomOverlay && zoomImage) {
+    var openZoom = function () {
+      zoomImage.src = mainImage.currentSrc || mainImage.src;
+      zoomImage.srcset = mainImage.srcset || '';
+      zoomImage.alt = mainImage.alt || '';
+      zoomOverlay.removeAttribute('hidden');
+      document.body.classList.add('product-zoom-open');
+    };
+
+    var closeZoom = function () {
+      zoomOverlay.setAttribute('hidden', '');
+      document.body.classList.remove('product-zoom-open');
+    };
+
+    zoomTrigger.addEventListener('click', openZoom);
+
+    zoomOverlay.addEventListener('click', function (event) {
+      if (event.target === zoomOverlay || event.target.closest('[data-product-zoom-close]')) {
+        closeZoom();
+      }
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !zoomOverlay.hasAttribute('hidden')) closeZoom();
+    });
+  }
+
   var quantityInput = root.querySelector('[data-quantity-input]');
   var decreaseBtn = root.querySelector('[data-quantity-decrease]');
   var increaseBtn = root.querySelector('[data-quantity-increase]');

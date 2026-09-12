@@ -124,7 +124,7 @@
 
   <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
 </head>
-<body class="template-{{ request.page_type }}">
+<body class="template-{{ request.page_type }}" data-cart-add-url="{{ routes.cart_add_url }}">
 
   <a class="visually-hidden skip-to-content" href="#MainContent">Skip to content</a>
 
@@ -144,6 +144,7 @@
   {% section 'cart-drawer' %}
 
   <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
 
 </body>
 </html>

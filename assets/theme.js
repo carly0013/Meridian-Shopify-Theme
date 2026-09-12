@@ -15,13 +15,53 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  function getFocusable(container) {
+    return Array.prototype.slice.call(
+      container.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])')
+    );
+  }
+
   if (menuToggle && mobileNav) {
+    var trapMobileNav = function (event) {
+      if (event.key !== 'Tab') return;
+      var focusable = getFocusable(mobileNav);
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    var closeMobileNav = function (restoreFocus) {
+      setExpanded(menuToggle, mobileNav, false);
+      mobileNav.removeEventListener('keydown', trapMobileNav);
+      if (restoreFocus) menuToggle.focus();
+    };
+
     menuToggle.addEventListener('click', function () {
       var isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-      if (!isOpen && searchToggle && searchPanel) {
-        setExpanded(searchToggle, searchPanel, false);
+      if (isOpen) {
+        closeMobileNav(false);
+        return;
       }
-      setExpanded(menuToggle, mobileNav, !isOpen);
+
+      if (searchToggle && searchPanel) setExpanded(searchToggle, searchPanel, false);
+      setExpanded(menuToggle, mobileNav, true);
+      mobileNav.addEventListener('keydown', trapMobileNav);
+      var focusable = getFocusable(mobileNav);
+      if (focusable.length) focusable[0].focus();
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
+        closeMobileNav(true);
+      }
     });
   }
 

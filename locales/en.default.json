@@ -1,6 +1,10 @@
 {
   "general": {
     "close": "Close",
+    "breadcrumbs": {
+      "label": "Breadcrumb",
+      "home": "Home"
+    },
     "search": {
       "title": "Search",
       "placeholder": "Search products",
@@ -15,6 +19,9 @@
       "text": "The page you're looking for doesn't exist, or has moved.",
       "home": "Return home",
       "shop": "Continue shopping"
+    },
+    "list_collections": {
+      "title": "Collections"
     },
     "password_page": {
       "login_form_heading": "Enter using password",
@@ -42,6 +49,7 @@
       "decrease_quantity": "Decrease quantity",
       "increase_quantity": "Increase quantity",
       "view_image": "View image",
+      "zoom_image": "Zoom image",
       "pickup_available": "Pickup available at {{ location }}"
     }
   },
