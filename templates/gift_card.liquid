@@ -1,0 +1,75 @@
+{% layout none %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>{{ 'gift_card.general.title' | t }} - {{ shop.name }}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;700&family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+
+  {%- style -%}
+    :root {
+      --color-bg: {{ settings.color_background | default: '#1B1815' }};
+      --color-surface: {{ settings.color_surface | default: '#26211C' }};
+      --color-text: {{ settings.color_text | default: '#F3EFE8' }};
+      --color-muted: {{ settings.color_muted | default: '#BFB3A0' }};
+      --color-accent: {{ settings.color_accent | default: '#C9483D' }};
+      --color-line: {{ settings.color_line | default: '#443B2F' }};
+      --font-display: 'Bodoni Moda', Georgia, serif;
+      --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      --radius: {{ settings.corner_radius | default: 16 }}px;
+      --gutter: clamp(20px, 4vw, 64px);
+      color-scheme: dark;
+    }
+  {%- endstyle -%}
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+</head>
+<body class="template-gift-card">
+  <main class="gift-card-page">
+    {%- if settings.logo != blank -%}
+      {%- assign logo_height = 140.0 | divided_by: settings.logo.aspect_ratio | round -%}
+      <img src="{{ settings.logo | image_url: width: 280 }}" alt="{{ shop.name }}" width="140" height="{{ logo_height }}" class="gift-card-page__logo">
+    {%- else -%}
+      <p class="gift-card-page__wordmark">{{ shop.name }}</p>
+    {%- endif -%}
+
+    <div class="gift-card-page__card">
+      <p class="gift-card-page__eyebrow">{{ 'gift_card.general.title' | t }}</p>
+      <p class="gift-card-page__amount">{{ gift_card.initial_value | money }}</p>
+
+      {%- if gift_card.enabled and gift_card.expired == false -%}
+        {%- assign formatted_balance = gift_card.balance | money -%}
+        <p class="gift-card-page__balance">{{ 'gift_card.general.balance' | t: balance: formatted_balance }}</p>
+      {%- else -%}
+        <p class="gift-card-page__expired">{{ 'gift_card.general.expired' | t }}</p>
+      {%- endif -%}
+
+      <p class="gift-card-page__code">{{ gift_card.code | format_code }}</p>
+
+      {%- assign encoded_gift_card_url = gift_card.url | url_encode -%}
+      <div class="gift-card-page__qr">
+        <img
+          src="https://chart.googleapis.com/chart?cht=qr&chs=120x120&chld=L|0&chl={{ encoded_gift_card_url }}"
+          alt="{{ 'gift_card.general.qr_alt' | t }}"
+          width="120"
+          height="120"
+          loading="lazy"
+        >
+      </div>
+
+      {%- if gift_card.pass_url -%}
+        <a href="{{ gift_card.pass_url }}" class="button button--outline gift-card-page__wallet">{{ 'gift_card.general.add_to_apple_wallet' | t }}</a>
+      {%- endif -%}
+    </div>
+
+    <a href="{{ routes.root_url }}" class="gift-card-page__shop-link">{{ 'gift_card.general.shop_link' | t }}</a>
+
+    <p class="gift-card-page__print-link"><a href="#" onclick="window.print(); return false;">{{ 'gift_card.general.print' | t }}</a></p>
+  </main>
+</body>
+</html>

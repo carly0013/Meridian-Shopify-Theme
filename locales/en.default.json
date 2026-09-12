@@ -226,5 +226,16 @@
       "password_confirm": "Confirm new password",
       "submit": "Reset password"
     }
+  },
+  "gift_card": {
+    "general": {
+      "title": "Gift card",
+      "balance": "Current balance: {{ balance }}",
+      "expired": "This gift card has expired.",
+      "qr_alt": "QR code to redeem this gift card",
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "shop_link": "Continue shopping",
+      "print": "Print"
+    }
   }
 }
