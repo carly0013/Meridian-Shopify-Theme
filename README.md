@@ -39,3 +39,5 @@ Requires the [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) and a conne
 shopify theme dev --store your-store.myshopify.com
 shopify theme check
 ```
+
+Theme Check also runs automatically in GitHub Actions on every push and pull request (`.github/workflows/theme-check.yml`), using the rules in `.theme-check.yml`.
