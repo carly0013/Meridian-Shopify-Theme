@@ -1,0 +1,99 @@
+<article class="article">
+  <div class="article__header">
+    <p class="article__date">{{ article.published_at | date: '%B %d, %Y' }}</p>
+    <h1 class="article__title">{{ article.title }}</h1>
+    {%- if article.author != blank -%}
+      <p class="article__author">{{ 'blog.article.by_author' | t: author: article.author }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if article.image -%}
+    <div class="article__media">
+      <img
+        src="{{ article.image | image_url: width: 1400 }}"
+        srcset="{{ article.image | image_url: width: 800 }} 800w, {{ article.image | image_url: width: 1400 }} 1400w"
+        sizes="100vw"
+        alt="{{ article.image.alt | escape }}"
+        loading="eager"
+        width="{{ article.image.width }}"
+        height="{{ article.image.height }}"
+      >
+    </div>
+  {%- endif -%}
+
+  <div class="article__content rte">{{ article.content }}</div>
+
+  {%- if blog.comments_enabled? -%}
+    <div class="article__comments" id="comments">
+      <h2 class="article__comments-heading">{{ 'blog.article.comments_heading' | t: count: article.comments_count }}</h2>
+
+      {%- paginate article.comments by 20 -%}
+        {%- if article.comments_count > 0 -%}
+          <ul class="article__comments-list">
+            {%- for comment in article.comments -%}
+              <li class="article-comment">
+                <p class="article-comment__author">{{ comment.author }}</p>
+                <p class="article-comment__date">{{ comment.created_at | date: '%B %d, %Y' }}</p>
+                <div class="article-comment__content">{{ comment.content }}</div>
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="pagination" aria-label="{{ 'collections.pagination.label' | t }}">
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}" class="pagination__link">{{ 'collections.pagination.previous' | t }}</a>
+              {%- endif -%}
+              <span class="pagination__status">{{ 'collections.pagination.page_of' | t: current: paginate.current_page, total: paginate.pages }}</span>
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}" class="pagination__link">{{ 'collections.pagination.next' | t }}</a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endpaginate -%}
+
+      {%- form 'new_comment', article, class: 'comment-form' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="comment-form__message comment-form__message--success">
+            {%- if blog.moderated? -%}
+              {{ 'blog.article.comment_success_moderated' | t }}
+            {%- else -%}
+              {{ 'blog.article.comment_success' | t }}
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+
+        {%- if form.errors -%}
+          <ul class="comment-form__errors">
+            {%- for field in form.errors -%}
+              <li>{{ form.errors.messages[field] }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <div class="contact-form__row">
+          <div class="contact-form__field">
+            <label for="CommentAuthor">{{ 'contact.form.name' | t }}</label>
+            <input type="text" id="CommentAuthor" name="comment[author]" value="{{ form.author }}" required>
+          </div>
+          <div class="contact-form__field">
+            <label for="CommentEmail">{{ 'contact.form.email' | t }}</label>
+            <input type="email" id="CommentEmail" name="comment[email]" value="{{ form.email }}" required>
+          </div>
+        </div>
+        <div class="contact-form__field">
+          <label for="CommentBody">{{ 'blog.article.comment_label' | t }}</label>
+          <textarea id="CommentBody" name="comment[body]" required>{{ form.body }}</textarea>
+        </div>
+        <button type="submit" class="button">{{ 'blog.article.comment_submit' | t }}</button>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "Main article"
+}
+{% endschema %}

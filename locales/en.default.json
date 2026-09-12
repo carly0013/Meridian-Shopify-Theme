@@ -1,7 +1,13 @@
 {
   "general": {
     "search": {
-      "submit": "Search"
+      "submit": "Search",
+      "placeholder": "Search",
+      "no_results": "No results for \"{{ terms }}\".",
+      "results_count": "{{ count }} results",
+      "products": "Products",
+      "pages": "Pages",
+      "articles": "Journal"
     },
     "cart": {
       "title": "Cart"
@@ -77,6 +83,47 @@
       "message": "Message",
       "send": "Send message",
       "post_success": "Thanks — we'll get back to you shortly."
+    }
+  },
+  "404": {
+    "title": "Page not found",
+    "message": "The page you're looking for doesn't exist or has moved.",
+    "home_link": "Return home"
+  },
+  "password_page": {
+    "opening_soon": "Opening soon.",
+    "wrong_password": "Wrong password.",
+    "password_label": "Password",
+    "enter": "Enter",
+    "admin_link": "Are you the store owner?"
+  },
+  "blog": {
+    "general": {
+      "no_articles": "No articles yet."
+    },
+    "article": {
+      "by_author": "By {{ author }}",
+      "comments_heading": "{{ count }} comments",
+      "comment_success": "Your comment was posted.",
+      "comment_success_moderated": "Your comment was submitted and is awaiting approval.",
+      "comment_label": "Comment",
+      "comment_submit": "Post comment"
+    }
+  },
+  "list_collections": {
+    "general": {
+      "title": "Collections"
+    }
+  },
+  "gift_card": {
+    "general": {
+      "title": "Gift card",
+      "balance": "Current balance: {{ balance }}",
+      "expired": "This gift card has expired.",
+      "qr_alt": "QR code to redeem this gift card",
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "shop_link": "Continue shopping",
+      "print": "Print"
     }
   }
 }
