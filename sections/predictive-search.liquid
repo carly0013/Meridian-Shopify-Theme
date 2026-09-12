@@ -1,31 +1,67 @@
-{%- if predictive_search.resources.results.products.size > 0 -%}
-  <div class="header-search__result-list">
-    {%- for product in predictive_search.resources.results.products -%}
-      <a href="{{ product.url }}" class="header-search__result">
-        {%- if product.featured_media != blank -%}
-          <img
-            src="{{ product.featured_media | image_url: width: 96 }}"
-            alt=""
-            width="48"
-            height="64"
-            class="header-search__result-media"
-            loading="lazy"
-          >
-        {%- endif -%}
-        <span class="header-search__result-info">
-          <span class="header-search__result-title">{{ product.title }}</span>
-          <span class="header-search__result-price">
-            {%- if product.price_varies -%}
-              {{ product.price_min | money }}&ndash;{{ product.price_max | money }}
-            {%- else -%}
-              {{ product.price | money }}
+{%- liquid
+  assign total_results = predictive_search.resources.results.products.size | plus: predictive_search.resources.results.pages.size | plus: predictive_search.resources.results.articles.size
+-%}
+
+{%- if total_results > 0 -%}
+  {%- if predictive_search.resources.results.products.size > 0 -%}
+    <div class="header-search__result-group">
+      <p class="header-search__result-group-title">{{ 'general.search.products' | t }}</p>
+      <div class="header-search__result-list">
+        {%- for product in predictive_search.resources.results.products -%}
+          <a href="{{ product.url }}" class="header-search__result">
+            {%- if product.featured_media != blank -%}
+              <img
+                src="{{ product.featured_media | image_url: width: 96 }}"
+                alt=""
+                width="48"
+                height="64"
+                class="header-search__result-media"
+                loading="lazy"
+              >
             {%- endif -%}
-          </span>
-        </span>
-      </a>
-    {%- endfor -%}
-  </div>
-  <a href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&type=product" class="header-search__view-all">
+            <span class="header-search__result-info">
+              <span class="header-search__result-title">{{ product.title }}</span>
+              <span class="header-search__result-price">
+                {%- if product.price_varies -%}
+                  {{ product.price_min | money }}&ndash;{{ product.price_max | money }}
+                {%- else -%}
+                  {{ product.price | money }}
+                {%- endif -%}
+              </span>
+            </span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if predictive_search.resources.results.articles.size > 0 -%}
+    <div class="header-search__result-group">
+      <p class="header-search__result-group-title">{{ 'general.search.articles' | t }}</p>
+      <div class="header-search__result-list">
+        {%- for article in predictive_search.resources.results.articles -%}
+          <a href="{{ article.url }}" class="header-search__result header-search__result--text">
+            <span class="header-search__result-title">{{ article.title }}</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if predictive_search.resources.results.pages.size > 0 -%}
+    <div class="header-search__result-group">
+      <p class="header-search__result-group-title">{{ 'general.search.pages' | t }}</p>
+      <div class="header-search__result-list">
+        {%- for page in predictive_search.resources.results.pages -%}
+          <a href="{{ page.url }}" class="header-search__result header-search__result--text">
+            <span class="header-search__result-title">{{ page.title }}</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <a href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}" class="header-search__view-all">
     {{ 'general.search.view_all' | t }}
   </a>
 {%- elsif predictive_search.performed -%}

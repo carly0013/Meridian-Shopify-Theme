@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var params = new URLSearchParams({
           q: query,
-          'resources[type]': 'product',
+          'resources[type]': 'product,page,article',
           'resources[limit]': 6,
           'resources[options][unavailable_products]': 'last',
           section_id: 'predictive-search'

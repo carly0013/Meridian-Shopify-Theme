@@ -15,7 +15,10 @@
       "submit": "Search",
       "results_for": "Search results for \"{{ terms }}\"",
       "no_results": "No results found for \"{{ terms }}\"",
-      "view_all": "View all results"
+      "view_all": "View all results",
+      "products": "Products",
+      "pages": "Pages",
+      "articles": "Journal"
     },
     "404": {
       "eyebrow": "Lost",
