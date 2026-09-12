@@ -1,0 +1,104 @@
+{%- liquid
+  assign order_date = order.created_at | date: '%B %d, %Y'
+  assign cancelled_date = order.cancelled_at | date: '%B %d, %Y'
+-%}
+
+<div class="order-detail">
+  <a href="{{ routes.account_url }}" class="order-detail__back">&larr; {{ 'customer.order.back_to_account' | t }}</a>
+
+  <div class="order-detail__header">
+    <h1 class="order-detail__title">{{ 'customer.order.title' | t: name: order.name }}</h1>
+    <p class="order-detail__date">{{ 'customer.order.date_html' | t: date: order_date }}</p>
+    {%- if order.cancelled -%}
+      <p class="order-detail__cancelled">{{ 'customer.order.cancelled_html' | t: date: cancelled_date }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="order-detail__items">
+    <div class="order-detail__items-header">
+      <span>{{ 'customer.order.product' | t }}</span>
+      <span>{{ 'customer.order.price' | t }}</span>
+      <span>{{ 'customer.order.quantity' | t }}</span>
+      <span>{{ 'customer.order.total' | t }}</span>
+    </div>
+    {%- for line_item in order.line_items -%}
+      <div class="order-detail__item">
+        <div class="order-detail__item-product">
+          <div class="order-detail__item-media">
+            {%- if line_item.image -%}
+              <img
+                src="{{ line_item.image | image_url: width: 160 }}"
+                alt="{{ line_item.image.alt | escape }}"
+                width="80"
+                height="{{ 80.0 | divided_by: line_item.image.aspect_ratio | round }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+          <div>
+            <p class="order-detail__item-title">{{ line_item.title }}</p>
+            {%- unless line_item.variant.title == 'Default Title' -%}
+              <p class="order-detail__item-variant">{{ line_item.variant.title }}</p>
+            {%- endunless -%}
+            {%- if line_item.sku != blank -%}
+              <p class="order-detail__item-sku">{{ 'customer.order.sku' | t }}: {{ line_item.sku }}</p>
+            {%- endif -%}
+          </div>
+        </div>
+        <span data-label="{{ 'customer.order.price' | t }}">{{ line_item.price | money }}</span>
+        <span data-label="{{ 'customer.order.quantity' | t }}">{{ line_item.quantity }}</span>
+        <span data-label="{{ 'customer.order.total' | t }}">{{ line_item.line_price | money }}</span>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="order-detail__summary">
+    <div class="order-detail__summary-row">
+      <span>{{ 'customer.order.subtotal' | t }}</span>
+      <span>{{ order.subtotal_price | money }}</span>
+    </div>
+    {%- for shipping_method in order.shipping_methods -%}
+      <div class="order-detail__summary-row">
+        <span>{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})</span>
+        <span>{{ shipping_method.price | money }}</span>
+      </div>
+    {%- endfor -%}
+    {%- if order.total_discounts > 0 -%}
+      <div class="order-detail__summary-row">
+        <span>{{ 'customer.order.discount' | t }}</span>
+        <span>&minus;{{ order.total_discounts | money }}</span>
+      </div>
+    {%- endif -%}
+    {%- if order.total_tax > 0 -%}
+      <div class="order-detail__summary-row">
+        <span>{{ 'customer.order.tax' | t }}</span>
+        <span>{{ order.total_tax | money }}</span>
+      </div>
+    {%- endif -%}
+    <div class="order-detail__summary-row order-detail__summary-row--total">
+      <span>{{ 'customer.order.total' | t }}</span>
+      <span>{{ order.total_price | money }}</span>
+    </div>
+  </div>
+
+  <div class="order-detail__addresses">
+    {%- if order.billing_address -%}
+      <div class="order-detail__address">
+        <h2>{{ 'customer.order.billing_address' | t }}</h2>
+        <div class="rte">{{ order.billing_address | format_address }}</div>
+      </div>
+    {%- endif -%}
+    {%- if order.shipping_address -%}
+      <div class="order-detail__address">
+        <h2>{{ 'customer.order.shipping_address' | t }}</h2>
+        <div class="rte">{{ order.shipping_address | format_address }}</div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Main order"
+}
+{% endschema %}

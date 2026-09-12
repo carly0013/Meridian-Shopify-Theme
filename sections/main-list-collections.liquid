@@ -1,7 +1,7 @@
 {%- paginate collections by 24 -%}
 <div class="list-collections">
   <div class="list-collections__header">
-    <h1 class="list-collections__title">{{ 'list_collections.general.title' | t }}</h1>
+    <h1 class="list-collections__title">{{ 'general.list_collections.title' | t }}</h1>
   </div>
 
   <div class="list-collections__grid">
@@ -12,7 +12,7 @@
             <img
               src="{{ collection.featured_image | image_url: width: 800 }}"
               srcset="{{ collection.featured_image | image_url: width: 500 }} 500w, {{ collection.featured_image | image_url: width: 800 }} 800w"
-              sizes="(max-width: 749px) 50vw, 25vw"
+              sizes="(max-width: 749px) 50vw, 33vw"
               alt="{{ collection.featured_image.alt | escape }}"
               loading="lazy"
               width="{{ collection.featured_image.width }}"
@@ -43,6 +43,6 @@
 
 {% schema %}
 {
-  "name": "Main list collections"
+  "name": "Main list of collections"
 }
 {% endschema %}

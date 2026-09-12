@@ -38,5 +38,19 @@
         {{ card_variant.unit_price | money }}/{% if card_variant.unit_price_measurement.reference_value != 1 %}{{ card_variant.unit_price_measurement.reference_value }}{% endif %}{{ card_variant.unit_price_measurement.reference_unit }}
       </p>
     {%- endif -%}
+
+    {%- if product.available -%}
+      <button
+        type="button"
+        class="product-card__quick-add"
+        data-quick-add
+        data-variant-id="{{ card_variant.id }}"
+        {%- unless product.has_only_default_variant %}
+        data-quick-add-link="{{ product.url }}"
+        {%- endunless %}
+      >
+        {{ 'products.product.add_to_cart' | t }}
+      </button>
+    {%- endif -%}
   </div>
 </div>

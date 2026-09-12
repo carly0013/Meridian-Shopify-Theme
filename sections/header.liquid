@@ -15,53 +15,37 @@
     </a>
 
     <div class="site-header__actions">
-      <button type="button" class="site-header__search-toggle" aria-expanded="false" aria-controls="HeaderSearch" data-search-toggle>
+      <button
+        type="button"
+        class="site-header__search-toggle"
+        aria-expanded="false"
+        aria-controls="HeaderSearch"
+        data-search-toggle
+      >
         <svg class="site-header__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
-          <circle cx="11" cy="11" r="6.5"/>
-          <path d="M20 20l-4.3-4.3" stroke-linecap="round"/>
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m20.5 20.5-3.6-3.6" stroke-linecap="round"/>
         </svg>
-        <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
+        <span class="visually-hidden">{{ 'general.search.title' | t }}</span>
       </button>
 
-      <a href="{{ routes.cart_url }}" class="site-header__cart">
+      <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="site-header__account">
+        <span class="visually-hidden">{% if customer %}{{ 'general.account.title' | t }}{% else %}{{ 'general.account.login' | t }}{% endif %}</span>
+        <svg class="site-header__account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="12" cy="8.5" r="3.5"/>
+          <path d="M5 19.5c1.4-3.4 4-5 7-5s5.6 1.6 7 5" stroke-linecap="round"/>
+        </svg>
+      </a>
+
+      <a href="{{ routes.cart_url }}" class="site-header__cart" data-cart-drawer-trigger>
         <span class="visually-hidden">{{ 'general.cart.title' | t }}</span>
         <svg class="site-header__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
           <path d="M6.5 8h11l-.9 11.4a1 1 0 0 1-1 .9H8.4a1 1 0 0 1-1-.9L6.5 8Z" stroke-linejoin="round" stroke-linecap="round"/>
           <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke-linecap="round"/>
         </svg>
-        {%- if cart.item_count > 0 -%}
-          <span class="site-header__cart-count" data-cart-count>{{ cart.item_count }}</span>
-        {%- endif -%}
+        {%- render 'cart-icon-bubble' -%}
       </a>
     </div>
-  </div>
-
-  <div id="HeaderSearch" class="header-search" data-header-search hidden>
-    <form
-      action="{{ routes.search_url }}"
-      method="get"
-      role="search"
-      class="header-search__form"
-      data-predictive-search-url="{{ routes.predictive_search_url }}"
-    >
-      <input
-        type="search"
-        name="q"
-        value="{{ search.terms | escape }}"
-        placeholder="{{ 'general.search.placeholder' | t }}"
-        class="header-search__input"
-        autocomplete="off"
-        data-predictive-search-input
-      >
-      <input type="hidden" name="type" value="product,article,page">
-      <button type="submit" class="header-search__submit" aria-label="{{ 'general.search.submit' | t }}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
-          <circle cx="11" cy="11" r="6.5"/>
-          <path d="M20 20l-4.3-4.3" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </form>
-    <div class="predictive-search" data-predictive-search-results hidden></div>
   </div>
 
   {%- if section.settings.menu != blank -%}
@@ -74,6 +58,37 @@
     </nav>
   {%- endif -%}
 
+  <div id="HeaderSearch" class="header-search" data-header-search hidden>
+    <form
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      class="header-search__form"
+      data-predictive-search-form
+      data-predictive-search-url="{{ routes.predictive_search_url }}"
+    >
+      <label class="visually-hidden" for="HeaderSearchInput">{{ 'general.search.placeholder' | t }}</label>
+      <input
+        type="search"
+        name="q"
+        id="HeaderSearchInput"
+        class="header-search__input"
+        placeholder="{{ 'general.search.placeholder' | t }}"
+        value="{{ search.terms | escape }}"
+        autocomplete="off"
+        data-predictive-search-input
+      >
+      <button type="submit" class="header-search__submit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m20.5 20.5-3.6-3.6" stroke-linecap="round"/>
+        </svg>
+        <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
+      </button>
+    </form>
+    <div class="header-search__results" data-predictive-search-results hidden></div>
+  </div>
+
   <div id="MobileNav" class="mobile-nav" data-mobile-nav hidden>
     <ul class="mobile-nav__list">
       {%- for link in section.settings.menu.links -%}
@@ -82,8 +97,6 @@
     </ul>
   </div>
 </header>
-
-<script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

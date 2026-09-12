@@ -1,49 +1,56 @@
 {%- paginate search.results by 24 -%}
-<div class="search-page">
-  <div class="search-page__header">
-    <h1 class="search-page__title">{{ 'general.search.submit' | t }}</h1>
-    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
-      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" class="search-page__input">
-      <input type="hidden" name="type" value="product,article,page">
-      <button type="submit" class="button">{{ 'general.search.submit' | t }}</button>
+<div class="search-results">
+  <div class="search-results__header">
+    <h1 class="search-results__title">
+      {%- if search.performed -%}
+        {{ 'general.search.results_for' | t: terms: search.terms }}
+      {%- else -%}
+        {{ 'general.search.title' | t }}
+      {%- endif -%}
+    </h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-results__form">
+      <label class="visually-hidden" for="SearchResultsInput">{{ 'general.search.placeholder' | t }}</label>
+      <input
+        type="search"
+        name="q"
+        id="SearchResultsInput"
+        class="search-results__input"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ 'general.search.placeholder' | t }}"
+        autocomplete="off"
+      >
+      <button type="submit" class="search-results__submit">{{ 'general.search.submit' | t }}</button>
     </form>
   </div>
 
-  {%- if search.performed -%}
-    {%- if search.results_count == 0 -%}
-      <p class="search-page__empty">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
-    {%- else -%}
-      <p class="search-page__count">{{ 'general.search.results_count' | t: count: search.results_count }}</p>
-
-      <div class="search-page__grid">
-        {%- for item in search.results -%}
-          {%- if item.object_type == 'product' -%}
-            {%- render 'product-card', product: item -%}
-          {%- else -%}
-            <a href="{{ item.url }}" class="search-page__result">
-              <p class="search-page__result-type">{{ item.object_type | capitalize }}</p>
-              <h2 class="search-page__result-title">{{ item.title }}</h2>
-              {%- if item.object_type == 'article' -%}
-                <p class="search-page__result-excerpt">{{ item.excerpt_or_content | strip_html | truncatewords: 20 }}</p>
-              {%- elsif item.content -%}
-                <p class="search-page__result-excerpt">{{ item.content | strip_html | truncatewords: 20 }}</p>
-              {%- endif -%}
+  {%- if search.performed and search.results_count == 0 -%}
+    <p class="search-results__empty">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+  {%- elsif search.performed -%}
+    <div class="collection__grid">
+      {%- for item in search.results -%}
+        {%- if item.object_type == 'product' -%}
+          {%- render 'product-card', product: item -%}
+        {%- else -%}
+          <div class="product-card search-results__page-result">
+            <a href="{{ item.url }}" class="product-card__info">
+              <h3 class="product-card__title">{{ item.title }}</h3>
+              <p class="product-card__unit-price">{{ item.content | strip_html | truncate: 120 }}</p>
             </a>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
 
-      {%- if paginate.pages > 1 -%}
-        <nav class="pagination" aria-label="{{ 'collections.pagination.label' | t }}">
-          {%- if paginate.previous -%}
-            <a href="{{ paginate.previous.url }}" class="pagination__link">{{ 'collections.pagination.previous' | t }}</a>
-          {%- endif -%}
-          <span class="pagination__status">{{ 'collections.pagination.page_of' | t: current: paginate.current_page, total: paginate.pages }}</span>
-          {%- if paginate.next -%}
-            <a href="{{ paginate.next.url }}" class="pagination__link">{{ 'collections.pagination.next' | t }}</a>
-          {%- endif -%}
-        </nav>
-      {%- endif -%}
+    {%- if paginate.pages > 1 -%}
+      <nav class="pagination" aria-label="{{ 'collections.pagination.label' | t }}">
+        {%- if paginate.previous -%}
+          <a href="{{ paginate.previous.url }}" class="pagination__link">{{ 'collections.pagination.previous' | t }}</a>
+        {%- endif -%}
+        <span class="pagination__status">{{ 'collections.pagination.page_of' | t: current: paginate.current_page, total: paginate.pages }}</span>
+        {%- if paginate.next -%}
+          <a href="{{ paginate.next.url }}" class="pagination__link">{{ 'collections.pagination.next' | t }}</a>
+        {%- endif -%}
+      </nav>
     {%- endif -%}
   {%- endif -%}
 </div>
@@ -51,6 +58,6 @@
 
 {% schema %}
 {
-  "name": "Main search"
+  "name": "Main search results"
 }
 {% endschema %}

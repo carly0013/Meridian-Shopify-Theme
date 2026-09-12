@@ -1,0 +1,16 @@
+{%- comment -%}
+  Accepts: collection (optional), product (optional)
+{%- endcomment -%}
+<nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs.label' | t }}">
+  <ol class="breadcrumbs__list">
+    <li class="breadcrumbs__item"><a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a></li>
+    {%- if collection -%}
+      <li class="breadcrumbs__item"><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+    {%- elsif product.collections.first -%}
+      <li class="breadcrumbs__item"><a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a></li>
+    {%- endif -%}
+    {%- if product -%}
+      <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">{{ product.title }}</li>
+    {%- endif -%}
+  </ol>
+</nav>

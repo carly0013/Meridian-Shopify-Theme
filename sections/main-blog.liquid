@@ -1,36 +1,28 @@
-{%- paginate blog.articles by 12 -%}
-<div class="blog-page">
-  <div class="blog-page__header">
-    <h1 class="blog-page__title">{{ blog.title }}</h1>
+{%- paginate blog.articles by section.settings.articles_per_page -%}
+<div class="blog">
+  <div class="blog__header">
+    <h1 class="blog__title">{{ blog.title }}</h1>
   </div>
 
+  {%- if blog.all_tags.size > 0 -%}
+    <ul class="blog__tags">
+      <li>
+        <a href="{{ blog.url }}" class="blog__tag{% unless current_tags %} is-active{% endunless %}">{{ 'blog.article.all_tags' | t }}</a>
+      </li>
+      {%- for tag in blog.all_tags -%}
+        <li>
+          <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="blog__tag{% if current_tags contains tag %} is-active{% endif %}">{{ tag }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
   {%- if blog.articles.size == 0 -%}
-    <p class="blog-page__empty">{{ 'blog.general.no_articles' | t }}</p>
+    <p class="blog__empty">{{ 'blog.article.no_articles' | t }}</p>
   {%- else -%}
-    <div class="blog-page__grid">
+    <div class="blog__grid">
       {%- for article in blog.articles -%}
-        <article class="article-card">
-          <a href="{{ article.url }}" class="article-card__media">
-            {%- if article.image -%}
-              <img
-                src="{{ article.image | image_url: width: 800 }}"
-                srcset="{{ article.image | image_url: width: 500 }} 500w, {{ article.image | image_url: width: 800 }} 800w"
-                sizes="(max-width: 749px) 100vw, 33vw"
-                alt="{{ article.image.alt | escape }}"
-                loading="lazy"
-                width="{{ article.image.width }}"
-                height="{{ article.image.height }}"
-              >
-            {%- else -%}
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'article-card__placeholder-svg' }}
-            {%- endif -%}
-          </a>
-          <div class="article-card__info">
-            <p class="article-card__date">{{ article.published_at | date: '%B %d, %Y' }}</p>
-            <h2 class="article-card__title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
-            <div class="article-card__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</div>
-          </div>
-        </article>
+        {%- render 'article-card', article: article -%}
       {%- endfor -%}
     </div>
 
@@ -51,6 +43,17 @@
 
 {% schema %}
 {
-  "name": "Main blog"
+  "name": "Main blog",
+  "settings": [
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    }
+  ]
 }
 {% endschema %}

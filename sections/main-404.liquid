@@ -1,19 +1,15 @@
-<div class="error-page">
-  <p class="error-page__eyebrow">404</p>
-  <h1 class="error-page__title">{{ '404.title' | t }}</h1>
-  <p class="error-page__message">{{ '404.message' | t }}</p>
-
-  <form action="{{ routes.search_url }}" method="get" role="search" class="error-page__search">
-    <input type="search" name="q" placeholder="{{ 'general.search.placeholder' | t }}" class="error-page__search-input">
-    <input type="hidden" name="type" value="product,article,page">
-    <button type="submit" class="button">{{ 'general.search.submit' | t }}</button>
-  </form>
-
-  <a href="{{ routes.root_url }}" class="error-page__home-link">{{ '404.home_link' | t }}</a>
+<div class="error-404">
+  <p class="error-404__eyebrow">{{ 'general.404.eyebrow' | t }}</p>
+  <h1 class="error-404__title">{{ 'general.404.title' | t }}</h1>
+  <p class="error-404__text">{{ 'general.404.text' | t }}</p>
+  <div class="error-404__actions">
+    <a href="{{ routes.root_url }}" class="button">{{ 'general.404.home' | t }}</a>
+    <a href="{{ routes.all_products_collection_url }}" class="button button--outline">{{ 'general.404.shop' | t }}</a>
+  </div>
 </div>
 
 {% schema %}
 {
-  "name": "Main 404"
+  "name": "404 page"
 }
 {% endschema %}

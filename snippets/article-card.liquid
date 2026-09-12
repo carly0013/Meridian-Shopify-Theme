@@ -1,0 +1,26 @@
+{%- comment -%}
+  Accepts: article
+{%- endcomment -%}
+<article class="article-card">
+  <a href="{{ article.url }}" class="article-card__media">
+    {%- if article.image -%}
+      <img
+        src="{{ article.image | image_url: width: 800 }}"
+        srcset="{{ article.image | image_url: width: 500 }} 500w, {{ article.image | image_url: width: 800 }} 800w"
+        sizes="(max-width: 749px) 100vw, 33vw"
+        alt="{{ article.image.alt | escape }}"
+        loading="lazy"
+        width="{{ article.image.width }}"
+        height="{{ article.image.height }}"
+      >
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'article-card__placeholder-svg' }}
+    {%- endif -%}
+  </a>
+  <div class="article-card__info">
+    <p class="article-card__date">{{ article.published_at | date: '%B %d, %Y' }}</p>
+    <h3 class="article-card__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+    <p class="article-card__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</p>
+    <a href="{{ article.url }}" class="article-card__link">{{ 'blog.article.read_more' | t }}</a>
+  </div>
+</article>

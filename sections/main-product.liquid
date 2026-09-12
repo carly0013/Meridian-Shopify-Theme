@@ -2,20 +2,24 @@
   assign current_variant = product.selected_or_first_available_variant
 -%}
 
-<section class="product" data-product-root data-section-id="{{ section.id }}">
+{%- render 'breadcrumbs', product: product, collection: collection -%}
+
+<section class="product" data-product-root data-section-id="{{ section.id }}" data-cart-add-url="{{ routes.cart_add_url }}">
   <div class="product__gallery product-gallery" data-gallery>
     <div class="product-gallery__main" data-gallery-main>
       {%- if product.featured_media != blank -%}
-        <img
-          src="{{ product.featured_media | image_url: width: 1200 }}"
-          srcset="{{ product.featured_media | image_url: width: 700 }} 700w, {{ product.featured_media | image_url: width: 1200 }} 1200w, {{ product.featured_media | image_url: width: 1800 }} 1800w"
-          sizes="(max-width: 900px) 100vw, 50vw"
-          alt="{{ product.featured_media.alt | escape }}"
-          width="{{ product.featured_media.width }}"
-          height="{{ product.featured_media.height }}"
-          loading="eager"
-          data-gallery-main-image
-        >
+        <button type="button" class="product-gallery__zoom-trigger" data-gallery-zoom-trigger aria-label="{{ 'products.product.zoom_image' | t }}">
+          <img
+            src="{{ product.featured_media | image_url: width: 1200 }}"
+            srcset="{{ product.featured_media | image_url: width: 700 }} 700w, {{ product.featured_media | image_url: width: 1200 }} 1200w, {{ product.featured_media | image_url: width: 1800 }} 1800w"
+            sizes="(max-width: 900px) 100vw, 50vw"
+            alt="{{ product.featured_media.alt | escape }}"
+            width="{{ product.featured_media.width }}"
+            height="{{ product.featured_media.height }}"
+            loading="eager"
+            data-gallery-main-image
+          >
+        </button>
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'product-gallery__placeholder-svg' }}
       {%- endif -%}
@@ -126,6 +130,8 @@
         {%- endif -%}
       </button>
 
+      <p class="product-form__error" data-add-to-cart-error hidden role="alert"></p>
+
       {{ form | payment_button }}
     {%- endform -%}
 
@@ -166,6 +172,16 @@
     {%- endif -%}
   {%- endfor -%}
 </section>
+
+<div class="product-zoom" data-product-zoom hidden>
+  <button type="button" class="product-zoom__close" data-product-zoom-close>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+      <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"/>
+    </svg>
+    <span class="visually-hidden">{{ 'general.close' | t }}</span>
+  </button>
+  <img class="product-zoom__image" data-product-zoom-image alt="" width="1200" height="1600">
+</div>
 
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
