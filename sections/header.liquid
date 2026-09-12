@@ -14,16 +14,32 @@
       {%- endif -%}
     </a>
 
-    <a href="{{ routes.cart_url }}" class="site-header__cart">
-      <span class="visually-hidden">{{ 'general.cart.title' | t }}</span>
-      <svg class="site-header__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
-        <path d="M6.5 8h11l-.9 11.4a1 1 0 0 1-1 .9H8.4a1 1 0 0 1-1-.9L6.5 8Z" stroke-linejoin="round" stroke-linecap="round"/>
-        <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke-linecap="round"/>
-      </svg>
-      {%- if cart.item_count > 0 -%}
-        <span class="site-header__cart-count" data-cart-count>{{ cart.item_count }}</span>
-      {%- endif -%}
-    </a>
+    <div class="site-header__actions">
+      <button
+        type="button"
+        class="site-header__search-toggle"
+        aria-expanded="false"
+        aria-controls="HeaderSearch"
+        data-search-toggle
+      >
+        <svg class="site-header__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m20.5 20.5-3.6-3.6" stroke-linecap="round"/>
+        </svg>
+        <span class="visually-hidden">{{ 'general.search.title' | t }}</span>
+      </button>
+
+      <a href="{{ routes.cart_url }}" class="site-header__cart">
+        <span class="visually-hidden">{{ 'general.cart.title' | t }}</span>
+        <svg class="site-header__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <path d="M6.5 8h11l-.9 11.4a1 1 0 0 1-1 .9H8.4a1 1 0 0 1-1-.9L6.5 8Z" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke-linecap="round"/>
+        </svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="site-header__cart-count" data-cart-count>{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+    </div>
   </div>
 
   {%- if section.settings.menu != blank -%}
@@ -35,6 +51,38 @@
       </ul>
     </nav>
   {%- endif -%}
+
+  <div id="HeaderSearch" class="header-search" data-header-search hidden>
+    <form
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      class="header-search__form"
+      data-predictive-search-form
+      data-predictive-search-url="{{ routes.predictive_search_url }}"
+    >
+      <input type="hidden" name="type" value="product">
+      <label class="visually-hidden" for="HeaderSearchInput">{{ 'general.search.placeholder' | t }}</label>
+      <input
+        type="search"
+        name="q"
+        id="HeaderSearchInput"
+        class="header-search__input"
+        placeholder="{{ 'general.search.placeholder' | t }}"
+        value="{{ search.terms | escape }}"
+        autocomplete="off"
+        data-predictive-search-input
+      >
+      <button type="submit" class="header-search__submit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m20.5 20.5-3.6-3.6" stroke-linecap="round"/>
+        </svg>
+        <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
+      </button>
+    </form>
+    <div class="header-search__results" data-predictive-search-results hidden></div>
+  </div>
 
   <div id="MobileNav" class="mobile-nav" data-mobile-nav hidden>
     <ul class="mobile-nav__list">
