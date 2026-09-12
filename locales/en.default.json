@@ -1,5 +1,6 @@
 {
   "general": {
+    "close": "Close",
     "search": {
       "title": "Search",
       "placeholder": "Search products",
