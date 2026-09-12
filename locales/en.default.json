@@ -9,6 +9,20 @@
       "no_results": "No results found for \"{{ terms }}\"",
       "view_all": "View all results"
     },
+    "404": {
+      "eyebrow": "Lost",
+      "title": "This page has wandered off",
+      "text": "The page you're looking for doesn't exist, or has moved.",
+      "home": "Return home",
+      "shop": "Continue shopping"
+    },
+    "password_page": {
+      "login_form_heading": "Enter using password",
+      "login_password": "Password",
+      "login_password_placeholder": "Enter store password",
+      "login_form_submit": "Enter",
+      "login_form_error": "Wrong password!"
+    },
     "cart": {
       "title": "Cart"
     },
