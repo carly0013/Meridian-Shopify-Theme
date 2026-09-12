@@ -21,6 +21,72 @@
     <meta name="description" content="{{ page_description | escape }}">
   {%- endif -%}
 
+  {%- assign social_image_url = page_image | image_url: width: 1200 -%}
+
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:type" content="{% if template contains 'product' %}product{% else %}website{% endif %}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  {%- if page_description -%}
+    <meta property="og:description" content="{{ page_description | escape }}">
+  {%- endif -%}
+  {%- if page_image -%}
+    <meta property="og:image" content="https:{{ social_image_url }}">
+    <meta property="og:image:secure_url" content="https:{{ social_image_url }}">
+    <meta property="og:image:width" content="1200">
+  {%- endif -%}
+  {%- if template contains 'product' -%}
+    <meta property="product:price:amount" content="{{ product.selected_or_first_available_variant.price | divided_by: 100.00 }}">
+    <meta property="product:price:currency" content="{{ shop.currency }}">
+  {%- endif -%}
+
+  <meta name="twitter:card" content="{% if page_image %}summary_large_image{% else %}summary{% endif %}">
+  <meta name="twitter:title" content="{{ page_title }}">
+  {%- if page_description -%}
+    <meta name="twitter:description" content="{{ page_description | escape }}">
+  {%- endif -%}
+  {%- if page_image -%}
+    <meta name="twitter:image" content="https:{{ social_image_url }}">
+  {%- endif -%}
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | json }}
+      {%- if settings.logo -%},
+      "logo": {{ settings.logo | image_url: width: 300 | prepend: 'https:' | json }}
+      {%- endif -%}
+    }
+  </script>
+
+  {%- if template contains 'product' -%}
+    {%- assign seo_variant = product.selected_or_first_available_variant -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": {{ product.title | json }},
+        "description": {{ product.description | strip_html | json }},
+        "image": [{{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }}],
+        "sku": {{ seo_variant.sku | json }},
+        "brand": {
+          "@type": "Brand",
+          "name": {{ product.vendor | json }}
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": {{ shop.url | append: product.url | json }},
+          "priceCurrency": {{ shop.currency | json }},
+          "price": {{ seo_variant.price | divided_by: 100.00 | json }},
+          "availability": "https://schema.org/{% if seo_variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "itemCondition": "https://schema.org/NewCondition"
+        }
+      }
+    </script>
+  {%- endif -%}
+
   {{ content_for_header }}
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
