@@ -1,0 +1,105 @@
+{%- liquid
+  assign article_date = article.published_at | date: '%B %d, %Y'
+-%}
+
+<article class="article">
+  <div class="article__header">
+    <a href="{{ blog.url }}" class="article__back">&larr; {{ blog.title }}</a>
+    <h1 class="article__title">{{ article.title }}</h1>
+    <p class="article__byline">
+      {{ 'blog.article.posted_by' | t: author: article.author, date: article_date }}
+    </p>
+  </div>
+
+  {%- if article.image -%}
+    <div class="article__media">
+      <img
+        src="{{ article.image | image_url: width: 1600 }}"
+        srcset="{{ article.image | image_url: width: 800 }} 800w, {{ article.image | image_url: width: 1200 }} 1200w, {{ article.image | image_url: width: 1600 }} 1600w"
+        sizes="(max-width: 749px) 100vw, 900px"
+        alt="{{ article.image.alt | escape }}"
+        loading="eager"
+        width="{{ article.image.width }}"
+        height="{{ article.image.height }}"
+      >
+    </div>
+  {%- endif -%}
+
+  <div class="article__content rte">
+    {{ article.content }}
+  </div>
+
+  {%- if article.tags.size > 0 -%}
+    <ul class="article__tags">
+      {%- for tag in article.tags -%}
+        <li><a href="{{ blog.url }}/tagged/{{ tag | handleize }}">{{ tag }}</a></li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  <nav class="article__nav" aria-label="{{ 'blog.article.article_nav' | t }}">
+    {%- if blog.previous_article -%}
+      <a href="{{ blog.previous_article }}" class="article__nav-link article__nav-link--prev">&larr; {{ 'blog.article.previous' | t }}</a>
+    {%- endif -%}
+    {%- if blog.next_article -%}
+      <a href="{{ blog.next_article }}" class="article__nav-link article__nav-link--next">{{ 'blog.article.next' | t }} &rarr;</a>
+    {%- endif -%}
+  </nav>
+
+  {%- if blog.comments_enabled? -%}
+    <div class="article__comments">
+      <h2 class="article__comments-title">{{ 'blog.comments.title' | t: count: article.comments_count }}</h2>
+
+      {%- if article.comments_count > 0 -%}
+        <div class="comment-list">
+          {%- for comment in article.comments -%}
+            <div class="comment-list__item">
+              <p class="comment-list__meta">
+                <span class="comment-list__author">{{ comment.author }}</span>
+                <span class="comment-list__date">{{ comment.created_at | date: '%B %d, %Y' }}</span>
+              </p>
+              <div class="comment-list__body rte">{{ comment.content }}</div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- form 'article', article, class: 'contact-form__form' -%}
+        {%- if form.errors -%}
+          <div class="contact-form__errors" role="alert">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+        {%- if form.posted_successfully? -%}
+          <p class="contact-form__message contact-form__message--success">
+            {%- if blog.moderated? -%}
+              {{ 'blog.comments.success_moderated' | t }}
+            {%- else -%}
+              {{ 'blog.comments.success' | t }}
+            {%- endif -%}
+          </p>
+        {%- else -%}
+          <div class="contact-form__row">
+            <div class="contact-form__field">
+              <label for="CommentAuthor">{{ 'blog.comments.name' | t }}</label>
+              <input type="text" id="CommentAuthor" name="comment[author]" value="{{ form.author }}" autocomplete="name" required>
+            </div>
+            <div class="contact-form__field">
+              <label for="CommentEmail">{{ 'blog.comments.email' | t }}</label>
+              <input type="email" id="CommentEmail" name="comment[email]" value="{{ form.email }}" autocomplete="email" required>
+            </div>
+          </div>
+          <div class="contact-form__field">
+            <label for="CommentBody">{{ 'blog.comments.message' | t }}</label>
+            <textarea id="CommentBody" name="comment[body]" required>{{ form.body }}</textarea>
+          </div>
+          <button type="submit" class="button">{{ 'blog.comments.submit' | t }}</button>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "Main article"
+}
+{% endschema %}

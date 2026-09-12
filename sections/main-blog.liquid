@@ -1,0 +1,59 @@
+{%- paginate blog.articles by section.settings.articles_per_page -%}
+<div class="blog">
+  <div class="blog__header">
+    <h1 class="blog__title">{{ blog.title }}</h1>
+  </div>
+
+  {%- if blog.all_tags.size > 0 -%}
+    <ul class="blog__tags">
+      <li>
+        <a href="{{ blog.url }}" class="blog__tag{% unless current_tags %} is-active{% endunless %}">{{ 'blog.article.all_tags' | t }}</a>
+      </li>
+      {%- for tag in blog.all_tags -%}
+        <li>
+          <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="blog__tag{% if current_tags contains tag %} is-active{% endif %}">{{ tag }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  {%- if blog.articles.size == 0 -%}
+    <p class="blog__empty">{{ 'blog.article.no_articles' | t }}</p>
+  {%- else -%}
+    <div class="blog__grid">
+      {%- for article in blog.articles -%}
+        {%- render 'article-card', article: article -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="pagination" aria-label="{{ 'collections.pagination.label' | t }}">
+        {%- if paginate.previous -%}
+          <a href="{{ paginate.previous.url }}" class="pagination__link">{{ 'collections.pagination.previous' | t }}</a>
+        {%- endif -%}
+        <span class="pagination__status">{{ 'collections.pagination.page_of' | t: current: paginate.current_page, total: paginate.pages }}</span>
+        {%- if paginate.next -%}
+          <a href="{{ paginate.next.url }}" class="pagination__link">{{ 'collections.pagination.next' | t }}</a>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Main blog",
+  "settings": [
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    }
+  ]
+}
+{% endschema %}

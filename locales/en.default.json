@@ -111,6 +111,26 @@
       "post_success": "Thanks — we'll get back to you shortly."
     }
   },
+  "blog": {
+    "article": {
+      "read_more": "Read more",
+      "all_tags": "All",
+      "no_articles": "No articles yet.",
+      "posted_by": "By {{ author }} — {{ date }}",
+      "previous": "Previous",
+      "next": "Next",
+      "article_nav": "Article navigation"
+    },
+    "comments": {
+      "title": "Comments ({{ count }})",
+      "name": "Name",
+      "email": "Email",
+      "message": "Comment",
+      "submit": "Post comment",
+      "success": "Your comment has been posted.",
+      "success_moderated": "Your comment has been submitted and is awaiting approval."
+    }
+  },
   "customer": {
     "login": {
       "title": "Log in",
