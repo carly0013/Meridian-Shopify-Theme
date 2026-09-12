@@ -1,0 +1,63 @@
+<div class="account-page">
+  <div class="account-page__header">
+    <h1 class="account-page__title">{{ 'customer.account.title' | t }}</h1>
+    <a href="{{ routes.account_logout_url }}" class="account-page__logout">{{ 'customer.account.log_out' | t }}</a>
+  </div>
+
+  <p class="account-page__intro">{{ 'customer.account.logged_in_as' | t: email: customer.email }}</p>
+
+  <div class="account-page__section">
+    <div class="account-page__section-header">
+      <h2 class="account-page__section-title">{{ 'customer.account.order_history' | t }}</h2>
+    </div>
+
+    {%- paginate customer.orders by 10 -%}
+      {%- if customer.orders.size == 0 -%}
+        <p class="account-page__empty">{{ 'customer.account.no_orders' | t }}</p>
+      {%- else -%}
+        <div class="order-history">
+          <div class="order-history__header">
+            <span>{{ 'customer.account.order_number' | t }}</span>
+            <span>{{ 'customer.account.date' | t }}</span>
+            <span>{{ 'customer.account.payment_status' | t }}</span>
+            <span>{{ 'customer.account.fulfillment_status' | t }}</span>
+            <span>{{ 'customer.account.total' | t }}</span>
+            <span></span>
+          </div>
+          {%- for order in customer.orders -%}
+            <div class="order-history__row">
+              <span data-label="{{ 'customer.account.order_number' | t }}">{{ order.name }}</span>
+              <span data-label="{{ 'customer.account.date' | t }}">{{ order.created_at | date: '%B %d, %Y' }}</span>
+              <span data-label="{{ 'customer.account.payment_status' | t }}">{{ order.financial_status | capitalize }}</span>
+              <span data-label="{{ 'customer.account.fulfillment_status' | t }}">{{ order.fulfillment_status | capitalize }}</span>
+              <span data-label="{{ 'customer.account.total' | t }}">{{ order.total_price | money }}</span>
+              <a href="{{ order.customer_url }}" class="order-history__view">{{ 'customer.account.view_order' | t }}</a>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="pagination" aria-label="{{ 'collections.pagination.label' | t }}">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="pagination__link">{{ 'collections.pagination.previous' | t }}</a>
+            {%- endif -%}
+            <span class="pagination__status">{{ 'collections.pagination.page_of' | t: current: paginate.current_page, total: paginate.pages }}</span>
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="pagination__link">{{ 'collections.pagination.next' | t }}</a>
+            {%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+
+  <div class="account-page__section">
+    <a href="{{ routes.account_addresses_url }}" class="account-page__link">{{ 'customer.account.view_addresses' | t }}</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Main account"
+}
+{% endschema %}

@@ -1,0 +1,72 @@
+<div class="account-page">
+  <div class="account-page__header">
+    <h1 class="account-page__title">{{ 'customer.addresses.title' | t }}</h1>
+    <a href="{{ routes.account_url }}" class="account-page__back">&larr; {{ 'customer.addresses.back_to_account' | t }}</a>
+  </div>
+
+  <details class="address-block address-block--new">
+    <summary class="address-block__summary">{{ 'customer.addresses.add_new' | t }}</summary>
+    <div class="address-block__form">
+      {%- form 'customer_address', customer.new_address, class: 'contact-form__form' -%}
+        {%- if form.errors -%}
+          <div class="contact-form__errors" role="alert">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+        {%- render 'address-form', form: form, form_id: 'New' -%}
+        <button type="submit" class="button">{{ 'customer.addresses.add' | t }}</button>
+      {%- endform -%}
+    </div>
+  </details>
+
+  {%- if customer.addresses.size > 0 -%}
+    <div class="address-list">
+      {%- for address in customer.addresses -%}
+        {%- assign is_default_address = false -%}
+        {%- if address == customer.default_address -%}
+          {%- assign is_default_address = true -%}
+        {%- endif -%}
+        <div class="address-list__item">
+          <div class="address-list__display rte">
+            {%- if is_default_address -%}
+              <span class="address-list__default-badge">{{ 'customer.addresses.default' | t }}</span>
+            {%- endif -%}
+            {{ address | format_address }}
+          </div>
+
+          <div class="address-list__actions">
+            <details class="address-block">
+              <summary class="address-block__summary">{{ 'customer.addresses.edit' | t }}</summary>
+              <div class="address-block__form">
+                {%- form 'customer_address', address, class: 'contact-form__form' -%}
+                  {%- if form.errors -%}
+                    <div class="contact-form__errors" role="alert">{{ form.errors | default_errors }}</div>
+                  {%- endif -%}
+                  {%- render 'address-form', form: form, form_id: address.id, is_default: is_default_address -%}
+                  <button type="submit" class="button">{{ 'customer.addresses.update' | t }}</button>
+                {%- endform -%}
+              </div>
+            </details>
+
+            {%- form 'customer_address', address, class: 'address-list__delete-form' -%}
+              <input type="hidden" name="_method" value="delete">
+              <button
+                type="submit"
+                class="address-list__delete"
+                onclick="return confirm('{{ 'customer.addresses.delete_confirm' | t }}');"
+              >
+                {{ 'customer.addresses.delete' | t }}
+              </button>
+            {%- endform -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Main addresses"
+}
+{% endschema %}

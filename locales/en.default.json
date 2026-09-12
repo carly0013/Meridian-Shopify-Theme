@@ -1,6 +1,10 @@
 {
   "general": {
     "close": "Close",
+    "account": {
+      "title": "Account",
+      "login": "Log in"
+    },
     "breadcrumbs": {
       "label": "Breadcrumb",
       "home": "Home"
@@ -105,6 +109,102 @@
       "message": "Message",
       "send": "Send message",
       "post_success": "Thanks — we'll get back to you shortly."
+    }
+  },
+  "customer": {
+    "login": {
+      "title": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "sign_in": "Sign in",
+      "forgot_password": "Forgot your password?",
+      "create_account": "New here?",
+      "create_account_link": "Create an account"
+    },
+    "recover_password": {
+      "title": "Reset your password",
+      "subtext": "We'll send you an email to reset your password.",
+      "success": "We've sent you an email with a link to reset your password.",
+      "submit": "Send reset link",
+      "cancel": "Back to log in"
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create account",
+      "already_have_account": "Already have an account?",
+      "sign_in_link": "Log in"
+    },
+    "account": {
+      "title": "My account",
+      "logged_in_as": "Logged in as {{ email }}",
+      "log_out": "Log out",
+      "order_history": "Order history",
+      "no_orders": "You haven't placed any orders yet.",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment status",
+      "fulfillment_status": "Fulfillment status",
+      "total": "Total",
+      "view_order": "View order",
+      "view_addresses": "Manage addresses"
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date_html": "Placed on {{ date }}",
+      "cancelled_html": "Order cancelled on {{ date }}",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "discount": "Discount",
+      "billing_address": "Billing address",
+      "shipping_address": "Shipping address",
+      "back_to_account": "Back to account"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "default": "Default",
+      "add_new": "Add a new address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Are you sure you want to delete this address?",
+      "set_default": "Set as default address",
+      "add": "Add address",
+      "update": "Update address",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company": "Company",
+      "address1": "Address",
+      "address2": "Apartment, suite, etc.",
+      "city": "City",
+      "country": "Country/region",
+      "province": "Province",
+      "zip": "Postal/ZIP code",
+      "phone": "Phone",
+      "back_to_account": "Back to account"
+    },
+    "activate_account": {
+      "title": "Activate account",
+      "subtext": "Create your password to activate your account.",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Activate account",
+      "decline": "Decline invitation"
+    },
+    "reset_password": {
+      "title": "Reset your password",
+      "subtext": "Enter a new password below.",
+      "password": "New password",
+      "password_confirm": "Confirm new password",
+      "submit": "Reset password"
     }
   }
 }
